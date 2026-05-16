@@ -1,0 +1,32 @@
+import { Translations } from '../types';
+
+export const homeTranslations: Translations = {
+  'home.discover': { ar: 'اكتشف ملاذك الفاخر في قلب مصر' },
+  'home.best_cities': { ar: 'أفضل الوجهات للإقامة' },
+  'home.best_cities_desc': { ar: 'استكشف أرقى المدن المصرية واختر فندقك المفضل' },
+  'home.mini_desc': { ar: 'تصفح سجل إقامتك الفاخرة وإدارة حجوزاتك' },
+  'search.where': { ar: 'إلى أين؟' },
+  'search.checkin': { ar: 'وصول' },
+  'search.checkout': { ar: 'مغادرة' },
+  'search.guests': { ar: 'ضيوف' },
+  'search.button': { ar: 'بحث' },
+  'search.location_val': { ar: 'القاهرة، الجونة، أسوان...' },
+  'search.results_count': { ar: 'منشأة متاحة' },
+  'search.sort_by': { ar: 'ترتيب حسب' },
+  'search.filters': { ar: 'الفلاتر' },
+  'search.price_range': { ar: 'نطاق السعر' },
+  'search.show_map': { ar: 'الخريطة' },
+  'search.no_results': { ar: 'لا توجد نتائج مطابقة' },
+  'search.price_per_night': { ar: 'لليلة الواحدة' },
+  'search.free_cancel': { ar: 'إلغاء مجاني' },
+  'search.apply': { ar: 'تطبيق' },
+  'search.reset': { ar: 'إعادة تعيين' },
+  'search.sort_relevance': { ar: 'الأكثر صلة' },
+  'search.sort_low_price': { ar: 'الأقل سعراً' },
+  'search.sort_high_rating': { ar: 'الأعلى تقييماً' },
+  'search.hotels_in': { ar: 'فنادق في' },
+  'search.compare': { ar: 'مقارنة' },
+  'search.compare_hotels': { ar: 'مقارنة الفنادق' },
+  'search.compare_limit': { ar: 'يمكنك مقارنة فندقين كحد أقصى' },
+  'search.compare_now': { ar: 'قارن الآن' }
+};

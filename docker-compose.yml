@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bermuda_db
+      MYSQL_USER: bermuda
+      MYSQL_PASSWORD: bermuda123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./laravel-backend/database_export.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build:
+      context: ./laravel-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: production
+      APP_DEBUG: 'false'
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: bermuda_db
+      DB_USERNAME: bermuda
+      DB_PASSWORD: bermuda123
+    depends_on:
+      - mysql
+    volumes:
+      - ./laravel-backend:/app
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://backend:8000/api
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

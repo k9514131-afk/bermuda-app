@@ -1,0 +1,23 @@
+export const paymentTranslations = {
+  title: "Portail de Paiement Royal",
+  subtitle: "Choisissez la méthode et facturation",
+  pay_arrival: "Payer à l'arrivée",
+  pay_online: "Paiement en ligne sécurisé",
+  manual_confirm: "Confirmation manuelle",
+  instant_confirm: "Confirmation Royale instantanée",
+  summary_title: "Résumé de facturation",
+  final_total: "Total final",
+  submit_btn: "Confirmer la réservation",
+  currency: "EGP",
+  modal_title: "Détails de paiement",
+  card_holder: "Nom du titulaire",
+  card_number: "Numéro de carte",
+  expiry_date: "Date d'expiration",
+  cvv: "Code de sécurité (CVV)",
+  city: "Ville",
+  country: "Pays",
+  address: "Adresse détaillée",
+  confirm_payment: "Confirmer le paiement",
+  processing_title: "Sécurisation en cours...",
+  processing_subtitle: "Traitement de votre demande"
+};

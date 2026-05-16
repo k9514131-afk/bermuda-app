@@ -1,0 +1,35 @@
+/**
+ * @fileOverview قاموس ترجمة صفحة التقارير والإحصائيات - واجهة الموظف
+ */
+export const reportsTranslations = {
+  title: "التقارير والإحصائيات",
+  subtitle: "تحليل أداء الفندق والتدفقات المالية",
+  view_reports: "الإحصائيات",
+  daily: "يومي",
+  weekly: "أسبوعي",
+  monthly: "شهري",
+  export_pdf: "تصدير PDF",
+  total_bookings: "إجمالي الحجوزات",
+  total_revenue: "إجمالي الإيرادات",
+  occupied_rooms: "الغرف المشغولة",
+  occupancy_rate: "نسبة الإشغال",
+  performance_curve: "منحنى الأداء المالي",
+  revenue_bookings_desc: "تطور الإيرادات وعدد الحجوزات",
+  live_update: "تحديث مباشر",
+  status_distribution: "توزيع حالات الغرف",
+  inventory_ratio: "نسبة إشغال مخزون الوحدات",
+  occupancy: "الإشغال",
+  status_occupied: "مشغولة",
+  status_available: "متاحة",
+  status_cleaning: "تحتاج تنظيف",
+  status_maintenance: "تحتاج صيانة",
+  unit: "وحدة",
+  table_title: "التفاصيل المالية لآخر فترة",
+  date: "التاريخ",
+  bookings_count: "عدد الحجوزات",
+  day_revenue: "إيراد اليوم",
+  general_status: "الحالة العامة",
+  stable: "مستقر",
+  bookings_suffix: "حجوزات",
+  currency_suffix: "ج.م"
+};

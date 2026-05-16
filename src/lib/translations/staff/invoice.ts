@@ -1,0 +1,31 @@
+export const invoiceTranslations = {
+  title: "الفاتورة الملكية",
+  subtitle: "واجهة تشغيل داخلية",
+  certified: "وثيقة ضريبية معتمدة",
+  ref_num: "رقم المرجع",
+  date_label: "تحريراً في",
+  guest_section: "بيانات التعاقد والنزيل",
+  unit_section: "وحدة الإقامة المخصصة",
+  stay_info: "فترة الإقامة",
+  nights_label: "ليالٍ",
+  guests_count: "عدد الأفراد",
+  children_count: "مرافقين أطفال",
+  extra_beds: "أسِرّة إضافية - المقر",
+  breakdown: {
+    title: "كشف الاستحقاق المالي التحليلي",
+    accommodation: "خدمات الإقامة",
+    night_rate: "سعر الليلة الواحدة",
+    total_stay: "إجمالي الإقامة",
+    extra_services: "الخدمات الإضافية",
+    taxes_fees: "الرسوم والضرائب",
+    service_fees: "رسوم الخدمة (10%)",
+    vat: "ضريبة القيمة المضافة (14%)",
+    discount: "الخصومات المطبقة",
+    deposit: "العربون المستلم مسبقاً",
+    grand_total: "الصافي المستحق النهائي",
+    payment_method: "طريقة السداد المعتمدة"
+  },
+  footer_msg: "تم الإنشاء آلياً عبر نظام برمودا السحابي • جميع الحقوق محفوظة 2026",
+  print_btn: "طباعة الفاتورة الملكية",
+  back_btn: "العودة للنظام الإداري"
+};

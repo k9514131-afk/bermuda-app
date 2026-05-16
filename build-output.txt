@@ -1,0 +1,56 @@
+﻿
+> nextn@0.1.0 build
+> next build
+
+   ظû▓ Next.js 15.1.11
+   - Environments: .env
+
+   Creating an optimized production build ...
+ ظ£ô Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/22) ...
+   Generating static pages (5/22) 
+   Generating static pages (10/22) 
+   Generating static pages (16/22) 
+ ظ£ô Generating static pages (22/22)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+ظ¤î ظùï /                                    3.98 kB         191 kB
+ظ¤£ ظùï /_not-found                          146 B           106 kB
+ظ¤£ ظùï /audit-logs                          2.42 kB         241 kB
+ظ¤£ ظùï /checkout                            7.44 kB         236 kB
+ظ¤£ ╞ْ /cities/[id]                         4.04 kB         232 kB
+ظ¤£ ظùï /compare                             5.56 kB         234 kB
+ظ¤£ ظùï /customer                            8.45 kB         251 kB
+ظ¤£ ╞ْ /customer/bookings/edit/[id]         6.16 kB         253 kB
+ظ¤£ ظùï /customer/checkout                   7.6 kB          252 kB
+ظ¤£ ظùï /customer/dashboard                  5.6 kB          240 kB
+ظ¤£ ╞ْ /customer/hotels/[id]                11.3 kB         258 kB
+ظ¤£ ظùï /customer/login                      586 B           251 kB
+ظ¤£ ظùï /customer/wishlist                   2.35 kB         230 kB
+ظ¤£ ظùï /dashboard                           5.8 kB          244 kB
+ظ¤£ ظùï /employee                            486 B           187 kB
+ظ¤£ ظùï /employee/dashboard                  146 B           106 kB
+ظ¤£ ظùï /employee/login                      592 B           251 kB
+ظ¤£ ╞ْ /hotels/[id]                         10.2 kB         247 kB
+ظ¤£ ╞ْ /invoice/[id]                        11.4 kB         208 kB
+ظ¤£ ╞ْ /payment-simulator/[id]              5.21 kB         192 kB
+ظ¤£ ظùï /profile                             5.46 kB         247 kB
+ظ¤£ ظùï /reports                             114 kB          352 kB
+ظ¤£ ظùï /reset-password                      3.2 kB          231 kB
+ظ¤£ ظùï /rooms                               6.67 kB         245 kB
+ظ¤£ ظùï /search                              16.2 kB         269 kB
+ظ¤¤ ظùï /walk-in                             14.5 kB         262 kB
++ First Load JS shared by all            105 kB
+  ظ¤£ chunks/1517-2ae51b5b820eec1f.js      50.4 kB
+  ظ¤£ chunks/4bd1b696-57d6907cc6707ae9.js  53 kB
+  ظ¤¤ other shared chunks (total)          2.09 kB
+
+
+ظùï  (Static)   prerendered as static content
+╞ْ  (Dynamic)  server-rendered on demand
+

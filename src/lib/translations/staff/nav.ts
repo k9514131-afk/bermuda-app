@@ -1,0 +1,20 @@
+export const navTranslations = {
+  bookings: "سجل الحجوزات",
+  rooms: "خريطة الغرف",
+  profile: "الملف الشخصي",
+  notifications: "مركز التنبيهات",
+  logout: "تسجيل الخروج",
+  ops_center: "مركز العمليات",
+  logout_confirm_title: "خروج من المنظومة",
+  logout_confirm_msg: "هل تريد تسجيل الخروج من مركز العمليات الفندقية؟",
+  logout_yes: "تأكيد الخروج",
+  logout_no: "تراجع",
+  exit_page_title: "تأكيد مغادرة الصفحة",
+  exit_page_msg: "هل أنتم متأكدون من رغبتكم في مغادرة هذه الصفحة الآن؟",
+  exit_page_yes: "نعم، أريد المغادرة",
+  system_tag: "منظومة برمودا الملكية • إصدار 2026",
+  audit_logs: "سجل التدقيق",
+  clear_all: "مسح الكل",
+  invoice: "الفاتورة",
+  main_menu: "القائمة الأساسية"
+};

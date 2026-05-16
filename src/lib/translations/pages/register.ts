@@ -1,0 +1,31 @@
+import { Translations } from '../types';
+
+export const registerTranslations: Translations = {
+  'register.title': { ar: 'إنشاء حساب ضيف ملكي' },
+  'register.name_label': { ar: 'الاسم الكامل (كما هو في الهوية)' },
+  'register.id_label': { ar: 'الرقم القومي / رقم جواز السفر' },
+  'register.phone_label': { ar: 'رقم الهاتف للتواصل المباشر' },
+  'register.email_label': { ar: 'عنوان البريد الإلكتروني المعتمد' },
+  'register.birth_date_label': { ar: 'تاريخ الميلاد الموثق' },
+  'register.gender_label': { ar: 'النوع / الجنس' },
+  'register.nationality_label': { ar: 'الجنسية / الموطن الأصلي' },
+  'register.marital_status_label': { ar: 'الحالة الاجتماعية' },
+  'register.password_label': { ar: 'كلمة السر الجديدة' },
+  'register.confirm_password_label': { ar: 'تأكيد كلمة السر' },
+  'register.submit_btn': { ar: 'إنشاء العضوية الملكية' },
+  'register.success_msg': { ar: 'تم إنشاء عضويتكم بنجاح، نرحب بكم في هورايزن للضيافة.' },
+  'auth.register_title': { ar: 'إنشاء حساب جديد' },
+  'auth.fullname': { ar: 'الاسم الكامل' },
+  'auth.id_number': { ar: 'رقم الهوية' },
+  'auth.phone': { ar: 'رقم الهاتف' },
+  'auth.email': { ar: 'البريد الإلكتروني' },
+  'auth.birth_date': { ar: 'تاريخ الميلاد' },
+  'auth.day': { ar: 'يوم' },
+  'auth.month': { ar: 'شهر' },
+  'auth.year': { ar: 'سنة' },
+  'auth.gender': { ar: 'النوع' },
+  'auth.nationality': { ar: 'الجنسية' },
+  'auth.marital_status': { ar: 'الحالة الاجتماعية' },
+  'auth.governorate': { ar: 'المحافظة' },
+  'auth.username': { ar: 'اسم المستخدم' }
+};

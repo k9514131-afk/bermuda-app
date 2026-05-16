@@ -1,0 +1,21 @@
+export const compareTranslations = {
+  no_results: "No hotels selected for comparison",
+  limit_msg: "Select up to 2 hotels for detailed comparison",
+  back_home: "Explore Hotels",
+  badge: "Elite Comparison",
+  title: "Compare Finest Destinations",
+  total_price: "Total Value",
+  per_night: "per night",
+  rating: "Overall Rating",
+  location: "Location & Destination",
+  amenities: "Available Amenities",
+  book_now: "Book Stay",
+  arrival_msg: "Royal Reminder: Identity verification is required upon arrival.",
+  empty_desc: "Add hotels from search page to compare features",
+  add_hotel: "Add Destination",
+  change_hotel: "Change Hotel",
+  select_hotel_title: "Choose Comparison Destination",
+  empty_slot: "Empty Slot",
+  selected_label: "Selected",
+  view_photos: "View Hotel Photos"
+};

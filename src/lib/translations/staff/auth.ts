@@ -1,0 +1,40 @@
+export const authTranslations = {
+  login_title: "مركز العمليات الفندقية",
+  login_desc: "الدخول الآمن لمنظومة التحكم الملكي",
+  username: "اسم المستخدم",
+  password: "كلمة المرور المعتمدة",
+  login_btn: "دخول آمن للمنظومة",
+  remember_me: "هل تريد تذكري؟",
+  error_msg: "عذراً، بيانات الدخول غير صحيحة أو الحساب غير مصرح له.",
+  offline_msg: "تعذّر الاتصال بالخادم، يرجى التحقق من تشغيل النظام والمحاولة مجدداً.",
+  wrong_password: "كلمة المرور المدخلة غير صحيحة، يرجى المحاولة مرة أخرى.",
+  success_msg: "تم تسجيل دخول العضو الملكي بنجاح، جاري فتح لوحة التحكم.",
+  staff_login_msg: "مركز العمليات الفندقية والتحكم الملكي",
+  staff: "عضو فريق برمودا الملكي",
+  
+  // مفاتيح البيانات الشخصية المستخدمة في البروفايل المشترك
+  fullname: "الاسم الكامل (الموثق إدارياً)",
+  id_number: "رقم الهوية / الرقم الوظيفي",
+  email: "البريد الإلكتروني المهني",
+  phone: "رقم الهاتف للتواصل",
+  birth_date: "تاريخ الميلاد",
+  gender: "النوع",
+  nationality: "الجنسية",
+  marital_status: "الحالة الاجتماعية",
+  
+  // الحالات الاجتماعية
+  status_single: "أعزب / آنسة",
+  status_married: "متزوج / متزوجة",
+  status_divorced: "منفصل / منفصلة",
+  status_widowed: "أرمل / أرملة",
+  status_single_male: "أعزب",
+  status_single_female: "آنسة",
+  status_married_male: "متزوج",
+  status_married_female: "متزوجة",
+  status_divorced_male: "منفصل",
+  status_divorced_female: "منفصلة",
+  status_widowed_male: "أرمل",
+  status_widowed_female: "أرملة",
+  gender_male: "ذكر",
+  gender_female: "أنثى"
+};

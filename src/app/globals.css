@@ -1,0 +1,186 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* الوضع الفاتح - ألوان نقية وراقية */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 98%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    
+    --primary: 188 41% 56%; 
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 188 41% 56%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --radius: 9px;
+
+    /* التعديل: الحدود الخارجية نهاراً #63625e @ 30% */
+    --border: 52 3% 38% / 0.3; 
+    
+    /* التعديل المطلوب: الحدود الداخلية نهاراً #33aac4 @ 45% */
+    --inner-border: 191 59% 48% / 0.45;
+    
+    /* التعديل المطلوب: الفوكس نهاراً #50cff2 @ 40% */
+    --ring: 193 86% 63% / 0.4;
+    --input: 191 59% 48% / 0.45;
+
+    /* الخطوط الاحترافية IBM Plex */
+    --font-current: var(--font-ibm-sans-arabic), var(--font-ibm-sans), sans-serif;
+    --font-alt: var(--font-ibm-sans), var(--font-ibm-sans-arabic), sans-serif;
+    
+    /* Fine Typography Spacing Variables - Adjusted for Balanced Separation */
+    --tracking-premium: 0.02em;
+    --word-spacing-premium: 0.18em;
+  }
+
+  .dark {
+    /* الوضع المظلم - الهوية الأصلية المعتمدة */
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 6%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 40% 98%;
+    
+    --primary: 188 41% 56%; 
+    --primary-foreground: 222 47% 11%;
+    
+    --secondary: 217.2 32.6% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 20%;
+    --muted-foreground: 215 20.2% 90%;
+    --accent: 188 41% 56%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* الحدود الذهبية الملكية ليلاً #ccb049 @ 30% */
+    --border: 47 56% 54% / 0.3; 
+    
+    /* الحدود الداخلية ليلاً #65bcd6 @ 25% */
+    --inner-border: 194 58% 62% / 0.25;
+    
+    /* الفوكس ليلاً #5dbfe3 @ 35% */
+    --ring: 196 71% 63% / 0.35;
+    --input: 194 58% 62% / 0.25;
+  }
+
+  * {
+    font-family: var(--font-current) !important;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased transition-colors duration-500;
+    font-family: var(--font-current) !important;
+    letter-spacing: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: var(--tracking-premium) !important;
+    word-spacing: var(--word-spacing-premium);
+    font-weight: 700 !important;
+    color: hsl(var(--foreground));
+  }
+
+  /* تحسين عرض الأرقام والنصوص المساعدة */
+  span, p, .text-inter, button, input, select, textarea {
+    font-family: var(--font-alt) !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  /* تطبيق الحدود العالمية لكافة الـ Inputs في الموقع */
+  input, select, textarea, .border-inner {
+    border-width: 1.2px !important;
+    border-color: hsl(var(--inner-border)) !important;
+    border-radius: var(--radius) !important;
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* ستايل الفوكس الموحد (نقر/كليك) - تم تعديله لضمان توازي الزوايا وعدم تضاعف الحدود */
+  input:focus, select:focus, textarea:focus, .border-inner:focus-within {
+    outline: none !important;
+    border-color: hsl(var(--ring)) !important;
+    box-shadow: none !important;
+    border-radius: var(--radius) !important;
+  }
+
+  /* إزالة أسهم مدخلات الأرقام نهائياً لضمان النظافة التامة وتجنب الخلفيات البيضاء غير المتناسقة (Solution 2) */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+
+  /* توحيد المسافات لمدخلات الأرقام بعد إزالة الأسهم لضمان التوسيط الهندسي */
+  input[type="number"] {
+    @apply px-4 !important;
+    text-align: center;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar,
+  .clean-scrollbar::-webkit-scrollbar {
+    display: none !important;
+  }
+  
+  .scrollbar-hide,
+  .clean-scrollbar {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+
+  .text-start { text-align: start; }
+  .border-outer { border: 1px solid hsl(var(--border)); }
+  .border-inner { border: 1.2px solid hsl(var(--inner-border)); }
+  /* تحديث ظل الفورم الملوكي */
+  .auth-card-shadow { box-shadow: 0 35px 80px -15px rgba(108, 190, 204, 0.35); }
+
+  /* Premium Micro-Spacing Class */
+  .premium-spacing {
+    letter-spacing: var(--tracking-premium) !important;
+    word-spacing: var(--word-spacing-premium) !important;
+  }
+}
+
+@layer base {
+  html {
+    @apply transition-colors duration-500;
+    overflow-x: hidden !important;
+    background-color: hsl(var(--background));
+  }
+
+  /* إزالة أي ستايل فوكس قديم لتوحيد الرؤية */
+  input:focus, select:focus, textarea:focus, button:focus-visible {
+    @apply outline-none !important;
+  }
+
+  .hover-shadow-premium:hover {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.bermuda-calendar-day[data-weekend="true"] {
+  color: #00f5d4 !important;
+  text-shadow: 0 0 8px rgba(0, 245, 212, 0.75);
+}
+
+.bermuda-calendar-day[data-selected="true"] {
+  background: #00f5d4 !important;
+  color: #001b1a !important;
+  box-shadow: 0 0 14px rgba(0, 245, 212, 0.65);
+}

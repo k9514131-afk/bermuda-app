@@ -1,0 +1,21 @@
+export const compareTranslations = {
+  no_results: "Aucun hôtel sélectionné pour comparaison",
+  limit_msg: "Sélectionnez jusqu'à 2 hôtels pour comparaison",
+  back_home: "Explorer les Hôtels",
+  badge: "Comparaison d'Élite",
+  title: "Comparer les destinations",
+  total_price: "Valeur Totale",
+  per_night: "par nuit",
+  rating: "Note globale",
+  location: "Emplacement",
+  amenities: "Équipements",
+  book_now: "Réserver",
+  arrival_msg: "Rappel Royal: La vérification d'identité est requise à l'arrivée.",
+  empty_desc: "Ajouter des hôtels pour comparer les caractéristiques",
+  add_hotel: "Ajouter Destination",
+  change_hotel: "Changer d'Hôtel",
+  select_hotel_title: "Choisir la destination",
+  empty_slot: "Emplacement Vide",
+  selected_label: "Sélectionné",
+  view_photos: "Voir les photos"
+};

@@ -1,0 +1,64 @@
+{
+  "placeholderImages": [
+    {
+      "id": "av1",
+      "description": "Default Avatar Silhouette 1",
+      "imageUrl": "/images/users/avatars/avatar-1.jpg",
+      "imageHint": "user silhouette"
+    },
+    {
+      "id": "av2",
+      "description": "Default Avatar Silhouette 2",
+      "imageUrl": "/images/users/avatars/avatar-2.jpg",
+      "imageHint": "user silhouette"
+    },
+    {
+      "id": "av3",
+      "description": "Default Avatar Silhouette 3",
+      "imageUrl": "/images/users/avatars/avatar-3.jpg",
+      "imageHint": "user silhouette"
+    },
+    {
+      "id": "av4",
+      "description": "Default Avatar Silhouette 4",
+      "imageUrl": "/images/users/avatars/avatar-4.jpg",
+      "imageHint": "user silhouette"
+    },
+    {
+      "id": "av5",
+      "description": "Default Avatar Silhouette 5",
+      "imageUrl": "/images/users/avatars/avatar-5.jpg",
+      "imageHint": "user silhouette"
+    },
+    {
+      "id": "av6",
+      "description": "Default Avatar Silhouette 6",
+      "imageUrl": "/images/users/avatars/avatar-6.jpg",
+      "imageHint": "user silhouette"
+    },
+    {
+      "id": "av7",
+      "description": "Default Avatar Silhouette 7",
+      "imageUrl": "/images/users/avatars/avatar-7.jpg",
+      "imageHint": "user silhouette"
+    },
+    {
+      "id": "av8",
+      "description": "Default Avatar Silhouette 8",
+      "imageUrl": "/images/users/avatars/avatar-8.jpg",
+      "imageHint": "user silhouette"
+    },
+    {
+      "id": "av9",
+      "description": "Default Avatar Silhouette 9",
+      "imageUrl": "/images/users/avatars/avatar-9.jpg",
+      "imageHint": "user silhouette"
+    },
+    {
+      "id": "av10",
+      "description": "Default Avatar Silhouette 10",
+      "imageUrl": "/images/users/avatars/avatar-10.jpg",
+      "imageHint": "user silhouette"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+export const paymentTranslations = {
+  title: "Royal Payment Portal",
+  subtitle: "Choose method and complete billing",
+  pay_arrival: "Pay at Arrival",
+  pay_online: "Secure Online Payment",
+  manual_confirm: "Manual Confirmation",
+  instant_confirm: "Instant Royal Confirmation",
+  summary_title: "Billing Summary",
+  final_total: "Final Total",
+  submit_btn: "Confirm Royal Booking",
+  currency: "EGP",
+  modal_title: "Royal Payment Details",
+  card_holder: "Card Holder Name",
+  card_number: "Card Number",
+  expiry_date: "Expiry Date",
+  cvv: "Security Code (CVV)",
+  city: "City",
+  country: "Country",
+  address: "Detailed Address",
+  confirm_payment: "Confirm Payment Process",
+  processing_title: "Securing Connection...",
+  processing_subtitle: "Processing your request"
+};
