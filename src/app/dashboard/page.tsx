@@ -47,9 +47,9 @@ export default function DashboardPage() {
   }, [searchQuery, allBookings]);
 
   const handleUpdateStatus = async (id: string, nextStatus: string) => {
-    const booking = allBookings.find(b => b.id === id);
+    const booking = allBookings.find(b => b.id?.toString() === id?.toString());
     if (nextStatus === 'Cancelled' && booking?.roomPhysicalId) await updateRoomStatus(booking.roomPhysicalId, 'available');
-    const updated = allBookings.map(b => b.id === id ? { ...b, status: nextStatus } : b);
+    const updated = allBookings.map(b => b.id?.toString() === id?.toString() ? { ...b, status: nextStatus } : b);
     setAllBookings(updated);
     
     // التخزين بنظام المفتاح والبارامترات
@@ -146,7 +146,7 @@ export default function DashboardPage() {
         >
           <DialogHeader className="p-6 bg-primary/5 border-b border-border/10 flex flex-col items-center shrink-0">
             <DialogTitle className="text-xl font-black flex items-center gap-3 tracking-tighter"><ShieldCheck className="text-primary" /> {t('reception.details_modal.title')}</DialogTitle>
-            <Badge variant="outline" className="mt-2 h-6 font-mono text-primary border-primary/20 text-[10px]">#{selectedBooking?.id?.toUpperCase()}</Badge>
+            <Badge variant="outline" className="mt-2 h-6 font-mono text-primary border-primary/20 text-[10px]">#{selectedBooking?.id?.toString().toUpperCase()}</Badge>
           </DialogHeader>
           <div className="p-8 space-y-6 flex-1 overflow-y-auto clean-scrollbar">
             <div className="grid grid-cols-2 gap-8">

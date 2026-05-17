@@ -30,7 +30,7 @@ export default function InvoicePage() {
   }, [user]);
 
   const booking = useMemo(() => {
-    return allBookings.find(b => b.id === id);
+    return allBookings.find(b => b.id?.toString() === id?.toString());
   }, [allBookings, id]);
 
   const handlePrint = () => {
@@ -149,7 +149,7 @@ export default function InvoicePage() {
             <div className={cn("space-y-1", isRTL ? "text-end" : "text-start md:text-end")}>
               <Badge className="bg-primary text-white text-[7.5px] font-black px-3 py-0.5 rounded-full border-none">{t('invoice.certified')}</Badge>
               <div className="pt-1">
-                <p className="text-[9px] font-black text-primary uppercase tracking-tighter" suppressHydrationWarning>{t('invoice.ref_num')}: #{booking.id.toUpperCase()}</p>
+                <p className="text-[9px] font-black text-primary uppercase tracking-tighter" suppressHydrationWarning>{t('invoice.ref_num')}: #{booking.id.toString().toUpperCase()}</p>
                 <p className="text-[7px] font-bold opacity-40 uppercase tracking-widest mt-0.5" suppressHydrationWarning>{t('invoice.date_label')}: {formatDateLocally(new Date())}</p>
               </div>
             </div>
