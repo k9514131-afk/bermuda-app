@@ -41,8 +41,8 @@ export default function DashboardPage() {
     if (!q) return bookings;
     return bookings.filter(b => 
       b.guest?.name?.toLowerCase().includes(q) || 
-      b.guest?.identity?.includes(q) ||
-      b.id?.toLowerCase().includes(q)
+      b.guest?.identity?.toString().includes(q) ||
+      b.id?.toString().toLowerCase().includes(q)
     );
   }, [searchQuery, allBookings]);
 
