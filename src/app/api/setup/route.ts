@@ -125,6 +125,7 @@ export async function GET() {
         card_last4 TEXT,
         card_type TEXT DEFAULT 'visa',
         status TEXT DEFAULT 'pending',
+        payload TEXT,
         created_at TEXT,
         updated_at TEXT
       )`,
@@ -134,6 +135,7 @@ export async function GET() {
     for (const migSql of [
       `ALTER TABLE booking_guests ADD COLUMN phone TEXT`,
       `ALTER TABLE booking_guests ADD COLUMN nationality TEXT`,
+      `ALTER TABLE payment_simulations ADD COLUMN payload TEXT`,
     ]) {
       try { await db.execute({ sql: migSql, args: [] }); } catch (_) { /* column already exists */ }
     }

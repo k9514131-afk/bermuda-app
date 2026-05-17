@@ -10,7 +10,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     args: [id],
   });
   if (!result.rows[0]) return jsonResponse({ message: 'Not found' }, 404);
-  return jsonResponse(result.rows[0]);
+  const row = result.rows[0] as any;
+  if (row.payload && typeof row.payload === 'string') {
+    try { row.payload = JSON.parse(row.payload); } catch (_) {}
+  }
+  return jsonResponse(row);
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
