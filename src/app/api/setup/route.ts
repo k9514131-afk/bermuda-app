@@ -84,6 +84,8 @@ export async function GET() {
         guest_type TEXT DEFAULT 'adult',
         age INTEGER,
         gender TEXT,
+        phone TEXT,
+        nationality TEXT,
         created_at TEXT,
         updated_at TEXT
       )`,
@@ -127,6 +129,14 @@ export async function GET() {
         updated_at TEXT
       )`,
     ]);
+
+    // Migrations: add new columns if they don't exist yet
+    for (const migSql of [
+      `ALTER TABLE booking_guests ADD COLUMN phone TEXT`,
+      `ALTER TABLE booking_guests ADD COLUMN nationality TEXT`,
+    ]) {
+      try { await db.execute({ sql: migSql, args: [] }); } catch (_) { /* column already exists */ }
+    }
 
     // Seed users
     const staffPw = await hashPassword('Abouda2004#');

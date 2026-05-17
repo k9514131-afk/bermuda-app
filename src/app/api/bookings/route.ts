@@ -11,12 +11,20 @@ export async function GET(req: NextRequest) {
   const args: unknown[] = [];
 
   if (auth.role === 'staff' || auth.role === 'admin') {
-    sql = `SELECT b.*, h.name_ar as hotel_name, r.room_number, r.type as room_type FROM bookings b
-           LEFT JOIN hotels h ON b.hotel_id = h.id LEFT JOIN rooms r ON b.room_id = r.id
+    sql = `SELECT b.*, h.name_ar as hotel_name, r.room_number, r.type as room_type,
+           g.full_name as guest_name, g.identity_no as guest_identity, g.phone as guest_phone, g.nationality as guest_nationality
+           FROM bookings b
+           LEFT JOIN hotels h ON b.hotel_id = h.id
+           LEFT JOIN rooms r ON b.room_id = r.id
+           LEFT JOIN booking_guests g ON g.booking_id = b.id AND g.guest_type = 'adult'
            ORDER BY b.created_at DESC`;
   } else {
-    sql = `SELECT b.*, h.name_ar as hotel_name, r.room_number, r.type as room_type FROM bookings b
-           LEFT JOIN hotels h ON b.hotel_id = h.id LEFT JOIN rooms r ON b.room_id = r.id
+    sql = `SELECT b.*, h.name_ar as hotel_name, r.room_number, r.type as room_type,
+           g.full_name as guest_name, g.identity_no as guest_identity, g.phone as guest_phone, g.nationality as guest_nationality
+           FROM bookings b
+           LEFT JOIN hotels h ON b.hotel_id = h.id
+           LEFT JOIN rooms r ON b.room_id = r.id
+           LEFT JOIN booking_guests g ON g.booking_id = b.id AND g.guest_type = 'adult'
            WHERE b.user_id = ? ORDER BY b.created_at DESC`;
     args.push(auth.id as number);
   }
@@ -31,7 +39,18 @@ export async function POST(req: NextRequest) {
     const auth = await getAuthUser(req);
     const userId = auth ? (auth.id as number) : 1;
 
-    const { hotel_id, room_id, room_physical_id, check_in, check_out, total_price, status, isPaid, companions, id } = body;
+    // قبول كلا من camelCase و snake_case
+    const hotel_id = body.hotel_id ?? body.hotelId;
+    const room_id = body.room_id ?? body.roomId;
+    const room_physical_id = body.room_physical_id ?? body.roomPhysicalId;
+    const check_in = body.check_in ?? body.checkIn;
+    const check_out = body.check_out ?? body.checkOut;
+    const total_price = body.total_price ?? body.totalPrice;
+    const status = body.status;
+    const isPaid = body.isPaid;
+    const companions = body.companions;
+    const id = body.id;
+    const guest = body.guest; // الضيف الأساسي
 
     const db = getDb();
 
@@ -55,6 +74,23 @@ export async function POST(req: NextRequest) {
 
     const bookingId = Number(result.lastInsertRowid);
 
+    // حفظ الضيف الأساسي
+    if (guest?.name) {
+      await db.execute({
+        sql: `INSERT INTO booking_guests (booking_id, full_name, identity_no, guest_type, phone, nationality, created_at, updated_at)
+              VALUES (?, ?, ?, 'adult', ?, ?, datetime('now'), datetime('now'))`,
+        args: [bookingId, guest.name || 'Guest', guest.identity || '---', guest.phone || null, guest.nationality || null],
+      }).catch(async () => {
+        // fallback if phone/nationality columns don't exist yet
+        await db.execute({
+          sql: `INSERT INTO booking_guests (booking_id, full_name, identity_no, guest_type, created_at, updated_at)
+                VALUES (?, ?, ?, 'adult', datetime('now'), datetime('now'))`,
+          args: [bookingId, guest.name || 'Guest', guest.identity || '---'],
+        });
+      });
+    }
+
+    // حفظ المرافقين
     if (companions && Array.isArray(companions)) {
       for (const c of companions) {
         await db.execute({
