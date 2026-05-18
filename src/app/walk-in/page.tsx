@@ -230,7 +230,7 @@ export default function WalkInBookingPage() {
     const birthDate = `${guestInfo.birthDay}/${guestInfo.birthMonth}/${guestInfo.birthYear}`;
 
     const finalData = {
-      id: bId, hotelId: defaultHotelId, hotelName: selectedHotel?.nameKey, location: selectedHotel?.locationKey,
+      id: bId, hotelId: targetRoom.hotel_id ?? targetRoom.hotelId ?? 1, hotelName: selectedHotel?.nameKey, location: selectedHotel?.locationKey,
       roomType: roomTypeId, roomId: targetRoom.number, roomPhysicalId: targetRoom.id, checkIn: checkIn.toISOString(), checkOut: checkOut.toISOString(),
       totalPrice, deposit: depositValue, paymentMethod: paymentMethod === 'visa' ? t('walkin.guest_form.visa') : t('walkin.guest_form.cash'),
       totalPersons, roomsCount: roomsNeeded, extraBeds: extraBedsNeeded, status: 'Active', source: 'staff', createdAt: new Date().toISOString(),
