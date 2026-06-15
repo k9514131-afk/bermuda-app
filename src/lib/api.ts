@@ -12,6 +12,8 @@ function getApiBaseUrl(): string {
   }
   // Client-side on Vercel or local Next.js API routes
   if (typeof window !== 'undefined') return '/api';
+  // Server-side local dev - use Next.js API routes
+  if (typeof window === 'undefined') return 'http://localhost:3000/api';
   // Local dev fallback
   return 'http://127.0.0.1:8000/api';
 }
