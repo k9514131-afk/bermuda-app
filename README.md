@@ -6,36 +6,32 @@
 
 ## 🚀 التشغيل السريع (Quick Start)
 
-### 1. الباك إند (Laravel)
+### الطريقة الأولى: زر البدء السريع ⭐
+انقر مرتين على ملف `start-quick.bat` لفتح المشروع تلقائياً في المتصفح
+
+### الطريقة الثانية: أوامر npm
 ```bash
+npm install
+npm run dev:open   # فتح المتصفح تلقائياً ثم تشغيل dev server
+```
+
+### الطريقة الثالثة: تشغيل كامل
+```bash
+# Terminal 1 - Backend
 cd laravel-backend
 composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate --seed
 php artisan serve
-```
-السيرفر سيشتغل على: `http://localhost:8000`
 
-### 2. الفرونت إند (Next.js)
-من المجلد الرئيسي:
-```bash
-npm install
+# Terminal 2 - Frontend
 npm run dev
 ```
-افتح المتصفح على: `http://localhost:9002`
 
-### أوامر بدء سريعة
-```bash
-npm run dev:open   # فتح المتصفح تلقائياً ثم تشغيل dev server
-npm run backend    # تشغيل Laravel backend على http://127.0.0.1:8000
-```
-
-إذا كنت تستخدم VS Code، يمكنك أيضاً تشغيل المهام من لوحة Tasks:
-- Start Frontend (Next.js)
-- Start Backend (Laravel)
-- Open Browser to Frontend
-
+### العناوين:
+- **الواجهة الأمامية:** `http://localhost:3000`
+- **الخلفية:** `http://localhost:8000`
 
 ---
 
@@ -63,6 +59,74 @@ php artisan migrate --seed
 ### 👤 حساب العميل (Customer)
 *   **Identity (ID):** `12345678901234`
 *   **Password:** `123456`
+
+---
+
+## 🛠️ التكنولوجيا المستخدمة
+
+### الواجهة الأمامية
+- **Next.js 15** - React framework
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **Mantine UI** - Component library
+- **Framer Motion** - Animations
+
+### الخلفية
+- **Laravel 11** - PHP framework
+- **MySQL** - Database
+- **PHP 8.3** - Server language
+
+---
+
+## 📊 الحالة الحالية
+
+| المكون | النسخة | الحالة |
+|-------|--------|--------|
+| Next.js | 15.1.11 | ✅ |
+| React | 19.2.6 | ✅ |
+| Laravel | 11 | ✅ |
+| TypeScript | 5.7 | ✅ |
+| MySQL | 8.0 | ✅ |
+
+---
+
+## 📁 بنية المشروع
+
+```
+bermuda/
+├── src/
+│   ├── app/              # Next.js pages & routes
+│   ├── components/       # React components
+│   ├── hooks/           # Custom React hooks
+│   ├── lib/             # Utilities & configs
+│   └── ai/              # Genkit AI flows
+├── laravel-backend/     # Laravel backend
+│   ├── app/
+│   │   ├── Http/        # Controllers
+│   │   ├── Models/      # Database models
+│   │   └── Services/    # Business logic
+│   ├── routes/          # API routes
+│   ├── database/        # Migrations & seeders
+│   └── config/          # Configuration
+├── public/              # Static assets
+├── start-quick.bat      # زر البدء السريع
+└── DEPLOYMENT.md        # دليل النشر على الاستضافة المجانية
+```
+
+---
+
+## 🌍 النشر على الاستضافة المجانية
+
+للحصول على رابط مجاني للمشروع، اتبع الخطوات في ملف [DEPLOYMENT.md](./DEPLOYMENT.md):
+
+- **Vercel** - للواجهة الأمامية (مجاني بالكامل)
+- **Railway** - للباك إند وقاعدة البيانات (مجاني)
+
+بعد النشر، ستحصل على رابط مثل:
+```
+https://bermuda-app.vercel.app
+```
 
 ---
 **تم التطوير والإشراف الفني بواسطة برمودا الملكية 2026. جميع الحقوق محفوظة.**

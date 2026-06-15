@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Bed, CheckCircle2, Clock, Hammer, Hash, ArrowRight, Loader2, Plus, Edit3, Trash2, Save, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { apiRequest } from '@/lib/api';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogPortal, DialogOverlay } from "@/components/ui/dialog";
 import { useToast } from '@/hooks/use-toast';
 
@@ -22,33 +23,31 @@ function RoomsContent() {
   const [apiRooms, setApiRooms] = useState<PhysicalRoom[]>([]);
 
   useEffect(() => {
-  if (!isHydrated) return;
+    if (!isHydrated) return;
 
-  const loadRooms = async () => {
-    try {
+    const loadRooms = async () => {
+      try {
+        const data = await apiRequest('/rooms');
 
-      const res = await fetch('http://127.0.0.1:8000/api/rooms');
-      const data = await res.json();
+        const normalizedRooms = Array.isArray(data)
+          ? data.map((room: any) => ({
+              ...room,
+              id: String(room.id),
+              floor: Number(room.floor),
+              number: String(room.number || room.room_number || ''),
+              status: room.status || 'available',
+              type: room.type || 'single',
+            }))
+          : [];
 
-      const normalizedRooms = Array.isArray(data)
-        ? data.map((room: any) => ({
-            ...room,
-            id: String(room.id),
-            floor: Number(room.floor),
-            number: String(room.number || room.room_number || ''),
-            status: room.status || 'available',
-            type: room.type || 'single',
-          }))
-        : [];
+        setApiRooms(normalizedRooms);
+      } catch (error) {
+        console.error('Failed to load rooms from API:', error);
+      }
+    };
 
-      setApiRooms(normalizedRooms);
-    } catch (error) {
-      console.error('Failed to load rooms from API:', error);
-    }
-  };
-
-  loadRooms();
-}, [refreshData, isHydrated]);
+    loadRooms();
+  }, [refreshData, isHydrated]);
 
  const displayedRooms = useMemo(() => {
   return [...(apiRooms.length ? apiRooms : rooms)]
@@ -89,13 +88,10 @@ const floors = useMemo(() => {
     if (editMode === 'add' && !finalForm.number) return;
     
 if (editMode === 'edit' && finalForm.id) {
-  const res = await fetch(`http://127.0.0.1:8000/api/rooms/${finalForm.id}/status`, {
+  const updatedRoom = await apiRequest(`/rooms/${finalForm.id}/status`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status: finalForm.status }),
   });
-
-  const updatedRoom = await res.json();
 
   setApiRooms(prev =>
     prev.map(room =>

@@ -1,35 +1,33 @@
 @echo off
-title Bermuda - Starting Servers...
-color 0A
-
-echo.
-echo  =============================================
-echo    BERMUDA - Starting All Servers
-echo  =============================================
+echo ========================================
+echo   Bermuda Royal Hospitality System
+echo   Starting Development Server...
+echo ========================================
 echo.
 
-:: Start Laravel Backend in a new window
-echo  [1/2] Starting Laravel Backend (Port 8000)...
-start "Bermuda - Laravel Backend" cmd /k "cd /d "%~dp0laravel-backend" && php artisan serve --host=127.0.0.1 --port=8000"
-
-:: Wait 2 seconds then start Next.js Frontend
-timeout /t 2 /nobreak >nul
-
-echo  [2/2] Starting Next.js Frontend (Port 9002)...
-start "Bermuda - Next.js Frontend" cmd /k "cd /d "%~dp0" && npm run dev"
-
-:: Wait for frontend to start then open browser
-echo.
-echo  Waiting for servers to start...
-timeout /t 8 /nobreak >nul
-
-echo  Opening browser...
-start "" "http://localhost:9002"
+echo [1/3] Installing dependencies...
+call npm install
+if errorlevel 1 (
+    echo ERROR: Failed to install dependencies
+    pause
+    exit /b 1
+)
 
 echo.
-echo  Both servers are running!
-echo  - Frontend: http://localhost:9002
-echo  - Backend:  http://127.0.0.1:8000
+echo [2/3] Starting Next.js development server on port 9002...
+start "" http://localhost:9002
+start "" cmd /k "npm run dev"
+
 echo.
-echo  Close this window at any time.
-pause
+echo [3/3] Waiting for server to start...
+timeout /t 5 /nobreak >nul
+
+echo.
+echo ========================================
+echo   SUCCESS! Bermuda is now running
+echo   Frontend: http://localhost:9002
+echo   Backend:  http://localhost:8000 (run separately)
+echo ========================================
+echo.
+echo Press any key to close this window...
+pause >nul
