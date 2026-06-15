@@ -1,6 +1,7 @@
 // Local JSON-based database for development (no external database required)
 import fs from 'fs';
 import path from 'path';
+import bcrypt from 'bcryptjs';
 
 const DB_FILE = path.join(process.cwd(), 'data', 'database.json');
 
@@ -13,17 +14,21 @@ function ensureDataDir() {
 }
 
 // Initialize database with default data
-function initializeDatabase() {
+async function initializeDatabase() {
   ensureDataDir();
   
   if (!fs.existsSync(DB_FILE)) {
+    // Hash passwords
+    const staffPassword = await bcrypt.hash('Abouda2004#', 12);
+    const customerPassword = await bcrypt.hash('123456', 12);
+    
     const defaultData = {
       users: [
         {
           id: 1,
           username: 'abouda7',
           email: 'staff@bermuda.com',
-          password: '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYxqGyYxqGy',
+          password: staffPassword,
           national_id: '12345678901234',
           role: 'staff',
           status: 'active',
@@ -32,7 +37,7 @@ function initializeDatabase() {
         {
           id: 2,
           email: 'customer@bermuda.com',
-          password: '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYxqGyYxqGy',
+          password: customerPassword,
           national_id: '12345678901235',
           role: 'customer',
           status: 'active',
@@ -81,18 +86,18 @@ function initializeDatabase() {
 }
 
 // Simple query executor for JSON database
-export function getDb() {
+export async function getDb() {
+  const db = await initializeDatabase();
+  
   return {
     async execute({ sql: query, args = [] }: { sql: string; args?: unknown[] }) {
-      const db = initializeDatabase();
-      
       // Simple SQL-like query parser for JSON database
       const lowerQuery = query.toLowerCase();
       
       if (lowerQuery.includes('select') && lowerQuery.includes('users')) {
         if (lowerQuery.includes('where')) {
           const cred = args[0] as string;
-          const user = db.users.find(u => 
+          const user = db.users.find((u: any) => 
             u.national_id === cred || 
             u.email === cred || 
             u.username === cred
@@ -113,7 +118,7 @@ export function getDb() {
       if (lowerQuery.includes('select') && lowerQuery.includes('rooms')) {
         if (lowerQuery.includes('group by')) {
           const hotelPrices: Record<string, number> = {};
-          db.rooms.forEach(r => {
+          db.rooms.forEach((r: any) => {
             if (!hotelPrices[r.hotel_id] || r.base_price < hotelPrices[r.hotel_id]) {
               hotelPrices[r.hotel_id] = r.base_price;
             }
