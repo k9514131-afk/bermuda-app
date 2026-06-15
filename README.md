@@ -110,8 +110,7 @@ bermuda/
 │   ├── database/        # Migrations & seeders
 │   └── config/          # Configuration
 ├── public/              # Static assets
-├── start-quick.bat      # زر البدء السريع
-└── DEPLOYMENT.md        # دليل النشر على الاستضافة المجانية
+└── start-quick.bat      # زر البدء السريع
 ```
 
 ---
