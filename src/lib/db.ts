@@ -5,12 +5,37 @@ import bcrypt from 'bcryptjs';
 
 const DB_FILE = path.join(process.cwd(), 'data', 'database.json');
 
+// Cache for database data to improve performance
+let dbCache: any = null;
+let cacheTimestamp = 0;
+const CACHE_DURATION = 5000; // 5 seconds
+
 // Ensure data directory exists
 function ensureDataDir() {
   const dataDir = path.join(process.cwd(), 'data');
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }
+}
+
+// Load database with caching
+function loadDatabase(): any {
+  const now = Date.now();
+  if (dbCache && (now - cacheTimestamp) < CACHE_DURATION) {
+    return dbCache;
+  }
+  
+  const data = JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'));
+  dbCache = data;
+  cacheTimestamp = now;
+  return data;
+}
+
+// Save database and update cache
+function saveDatabase(data: any): void {
+  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  dbCache = data;
+  cacheTimestamp = Date.now();
 }
 
 // Initialize database with default data (sync version)
@@ -81,16 +106,16 @@ function initializeDatabase() {
       saved_cards: []
     };
     
-    fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2));
+    saveDatabase(defaultData);
     return defaultData;
   }
   
-  return JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'));
+  return loadDatabase();
 }
 
 // Simple query executor for JSON database (sync version)
 export function getDb() {
-  const db = initializeDatabase();
+  const db = loadDatabase();
   
   return {
     async execute({ sql: query, args = [] }: { sql: string; args?: unknown[] }) {
@@ -242,7 +267,7 @@ export function getDb() {
             updated_at: new Date().toISOString(),
           };
           db.bookings.push(newBooking);
-          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          saveDatabase(db);
           return { rows: [], lastInsertRowid: newId };
         }
         
@@ -261,7 +286,7 @@ export function getDb() {
             updated_at: new Date().toISOString(),
           };
           db.rooms.push(newRoom);
-          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          saveDatabase(db);
           return { rows: [], lastInsertRowid: newId };
         }
         
@@ -279,7 +304,7 @@ export function getDb() {
             updated_at: new Date().toISOString(),
           };
           db.notifications.push(newNotification);
-          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          saveDatabase(db);
           return { rows: [], lastInsertRowid: newId };
         }
         
@@ -301,7 +326,7 @@ export function getDb() {
             updated_at: new Date().toISOString(),
           };
           db.booking_guests.push(newGuest);
-          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          saveDatabase(db);
           return { rows: [], lastInsertRowid: newId };
         }
       }
@@ -324,7 +349,7 @@ export function getDb() {
               room.status = args[5];
             }
             room.updated_at = new Date().toISOString();
-            fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+            saveDatabase(db);
           }
           return { rows: [], lastInsertRowid: null };
         }
@@ -337,7 +362,7 @@ export function getDb() {
           if (sim) {
             sim.status = args[0];
             sim.updated_at = new Date().toISOString();
-            fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+            saveDatabase(db);
           }
           return { rows: [], lastInsertRowid: null };
         }
@@ -349,7 +374,7 @@ export function getDb() {
         if (lowerQuery.includes('rooms')) {
           const roomId = args[0];
           db.rooms = db.rooms.filter((r: any) => r.id !== roomId);
-          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          saveDatabase(db);
           return { rows: [], lastInsertRowid: null };
         }
         
@@ -359,7 +384,7 @@ export function getDb() {
           const userId = args[1];
           if (!db.saved_cards) db.saved_cards = [];
           db.saved_cards = db.saved_cards.filter((c: any) => c.id !== cardId);
-          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          saveDatabase(db);
           return { rows: [], lastInsertRowid: null };
         }
         
@@ -367,7 +392,7 @@ export function getDb() {
         if (lowerQuery.includes('notifications')) {
           const userId = args[0];
           db.notifications = db.notifications.filter((n: any) => n.user_id !== userId);
-          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          saveDatabase(db);
           return { rows: [], lastInsertRowid: null };
         }
       }
