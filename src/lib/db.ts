@@ -74,8 +74,11 @@ function initializeDatabase() {
         { id: 5, hotel_id: 3, type: 'single', base_price: 3500, status: 'available' }
       ],
       bookings: [],
+      booking_guests: [],
       notifications: [],
-      audit_logs: []
+      audit_logs: [],
+      payment_simulations: [],
+      saved_cards: []
     };
     
     fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2));
@@ -94,39 +97,279 @@ export function getDb() {
       // Simple SQL-like query parser for JSON database
       const lowerQuery = query.toLowerCase();
       
-      if (lowerQuery.includes('select') && lowerQuery.includes('users')) {
-        if (lowerQuery.includes('where')) {
-          const cred = args[0] as string;
-          const user = db.users.find((u: any) => 
-            u.national_id === cred || 
-            u.email === cred || 
-            u.username === cred
-          );
-          return { rows: user ? [user] : [], lastInsertRowid: null };
+      // Handle SELECT queries
+      if (lowerQuery.includes('select')) {
+        // Users table
+        if (lowerQuery.includes('users')) {
+          if (lowerQuery.includes('where')) {
+            const cred = args[0] as string;
+            const user = db.users.find((u: any) => 
+              u.national_id === cred || 
+              u.email === cred || 
+              u.username === cred
+            );
+            return { rows: user ? [user] : [], lastInsertRowid: null };
+          }
+          return { rows: db.users, lastInsertRowid: null };
         }
-        return { rows: db.users, lastInsertRowid: null };
-      }
-      
-      if (lowerQuery.includes('select') && lowerQuery.includes('hotels')) {
-        return { rows: db.hotels, lastInsertRowid: null };
-      }
-      
-      if (lowerQuery.includes('select') && lowerQuery.includes('cities')) {
-        return { rows: db.cities, lastInsertRowid: null };
-      }
-      
-      if (lowerQuery.includes('select') && lowerQuery.includes('rooms')) {
-        if (lowerQuery.includes('group by')) {
-          const hotelPrices: Record<string, number> = {};
-          db.rooms.forEach((r: any) => {
-            if (!hotelPrices[r.hotel_id] || r.base_price < hotelPrices[r.hotel_id]) {
-              hotelPrices[r.hotel_id] = r.base_price;
+        
+        // Hotels table
+        if (lowerQuery.includes('hotels')) {
+          if (lowerQuery.includes('left join')) {
+            // Handle JOIN with cities
+            const hotelsWithCities = db.hotels.map((h: any) => ({
+              ...h,
+              city_slug: db.cities.find((c: any) => c.id === h.city_id)?.slug || null,
+              city_name_ar: db.cities.find((c: any) => c.id === h.city_id)?.name_ar || null,
+              city_name_en: db.cities.find((c: any) => c.id === h.city_id)?.name_en || null,
+            }));
+            
+            if (lowerQuery.includes('where') && lowerQuery.includes('c.slug')) {
+              const citySlug = args[0] as string;
+              return { rows: hotelsWithCities.filter((h: any) => h.city_slug === citySlug), lastInsertRowid: null };
             }
-          });
-          const rows = Object.entries(hotelPrices).map(([hotel_id, min_price]) => ({ hotel_id, min_price }));
-          return { rows, lastInsertRowid: null };
+            return { rows: hotelsWithCities, lastInsertRowid: null };
+          }
+          return { rows: db.hotels, lastInsertRowid: null };
         }
-        return { rows: db.rooms, lastInsertRowid: null };
+        
+        // Cities table
+        if (lowerQuery.includes('cities')) {
+          return { rows: db.cities, lastInsertRowid: null };
+        }
+        
+        // Rooms table
+        if (lowerQuery.includes('rooms')) {
+          if (lowerQuery.includes('left join')) {
+            // Handle JOIN with hotels
+            const roomsWithHotels = db.rooms.map((r: any) => ({
+              ...r,
+              hotel_name: db.hotels.find((h: any) => h.id === r.hotel_id)?.name_ar || null,
+            }));
+            return { rows: roomsWithHotels, lastInsertRowid: null };
+          }
+          if (lowerQuery.includes('group by')) {
+            const hotelPrices: Record<string, number> = {};
+            db.rooms.forEach((r: any) => {
+              if (!hotelPrices[r.hotel_id] || r.base_price < hotelPrices[r.hotel_id]) {
+                hotelPrices[r.hotel_id] = r.base_price;
+              }
+            });
+            const rows = Object.entries(hotelPrices).map(([hotel_id, min_price]) => ({ hotel_id, min_price }));
+            return { rows, lastInsertRowid: null };
+          }
+          return { rows: db.rooms, lastInsertRowid: null };
+        }
+        
+        // Bookings table
+        if (lowerQuery.includes('bookings')) {
+          if (lowerQuery.includes('left join')) {
+            // Handle JOIN with hotels, rooms, and guests
+            const bookingsWithDetails = db.bookings.map((b: any) => ({
+              ...b,
+              hotel_name: db.hotels.find((h: any) => h.id === b.hotel_id)?.name_ar || null,
+              room_number: db.rooms.find((r: any) => r.id === b.room_id)?.room_number || null,
+              room_type: db.rooms.find((r: any) => r.id === b.room_id)?.type || null,
+            }));
+            return { rows: bookingsWithDetails, lastInsertRowid: null };
+          }
+          return { rows: db.bookings, lastInsertRowid: null };
+        }
+        
+        // Notifications table
+        if (lowerQuery.includes('notifications')) {
+          return { rows: db.notifications, lastInsertRowid: null };
+        }
+        
+        // Audit logs table
+        if (lowerQuery.includes('audit_logs')) {
+          return { rows: db.audit_logs, lastInsertRowid: null };
+        }
+        
+        // Payment simulations table
+        if (lowerQuery.includes('payment_simulations')) {
+          return { rows: db.payment_simulations || [], lastInsertRowid: null };
+        }
+        
+        // Saved cards table
+        if (lowerQuery.includes('saved_cards')) {
+          return { rows: db.saved_cards || [], lastInsertRowid: null };
+        }
+      }
+      
+      // Handle INSERT queries
+      if (lowerQuery.includes('insert')) {
+        let newId = 1;
+        
+        // Users table
+        if (lowerQuery.includes('users')) {
+          newId = Math.max(...db.users.map((u: any) => u.id), 0) + 1;
+          const newUser: any = {
+            id: newId,
+            name: args[0],
+            national_id: args[1],
+            email: args[2],
+            phone: args[3],
+            password: args[4],
+            role: args[5],
+            status: args[6],
+            nationality: args[7],
+            gender: args[8],
+            marital_status: args[9],
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          db.users.push(newUser);
+          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          return { rows: [], lastInsertRowid: newId };
+        }
+        
+        // Bookings table
+        if (lowerQuery.includes('bookings')) {
+          newId = Math.max(...db.bookings.map((b: any) => b.id || 0), 0) + 1;
+          const newBooking: any = {
+            id: newId,
+            user_id: args[0],
+            hotel_id: args[1],
+            room_id: args[2],
+            check_in: args[3],
+            check_out: args[4],
+            total_price: args[5],
+            reference_no: args[6],
+            status: args[7],
+            payment_status: args[8],
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          db.bookings.push(newBooking);
+          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          return { rows: [], lastInsertRowid: newId };
+        }
+        
+        // Rooms table
+        if (lowerQuery.includes('rooms')) {
+          newId = Math.max(...db.rooms.map((r: any) => r.id), 0) + 1;
+          const newRoom: any = {
+            id: newId,
+            hotel_id: args[0],
+            room_number: args[1],
+            type: args[2],
+            floor: args[3],
+            base_price: args[4],
+            status: args[5],
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          db.rooms.push(newRoom);
+          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          return { rows: [], lastInsertRowid: newId };
+        }
+        
+        // Notifications table
+        if (lowerQuery.includes('notifications')) {
+          newId = Math.max(...db.notifications.map((n: any) => n.id || 0), 0) + 1;
+          const newNotification: any = {
+            id: newId,
+            user_id: args[0],
+            title: args[1],
+            message: args[2],
+            type: args[3],
+            is_read: args[4],
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          db.notifications.push(newNotification);
+          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          return { rows: [], lastInsertRowid: newId };
+        }
+        
+        // Booking guests table
+        if (lowerQuery.includes('booking_guests')) {
+          newId = Math.max(...(db.booking_guests || []).map((g: any) => g.id || 0), 0) + 1;
+          if (!db.booking_guests) db.booking_guests = [];
+          const newGuest: any = {
+            id: newId,
+            booking_id: args[0],
+            full_name: args[1],
+            identity_no: args[2],
+            guest_type: args[3],
+            phone: args[4],
+            nationality: args[5],
+            age: args[6],
+            gender: args[7],
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          db.booking_guests.push(newGuest);
+          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          return { rows: [], lastInsertRowid: newId };
+        }
+      }
+      
+      // Handle UPDATE queries
+      if (lowerQuery.includes('update')) {
+        // Rooms table
+        if (lowerQuery.includes('rooms')) {
+          const roomId = args[args.length - 1];
+          const room = db.rooms.find((r: any) => r.id === roomId);
+          if (room) {
+            if (lowerQuery.includes('status')) {
+              room.status = args[0];
+            } else {
+              room.hotel_id = args[0];
+              room.room_number = args[1];
+              room.type = args[2];
+              room.floor = args[3];
+              room.base_price = args[4];
+              room.status = args[5];
+            }
+            room.updated_at = new Date().toISOString();
+            fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          }
+          return { rows: [], lastInsertRowid: null };
+        }
+        
+        // Payment simulations table
+        if (lowerQuery.includes('payment_simulations')) {
+          const simId = args[args.length - 1];
+          if (!db.payment_simulations) db.payment_simulations = [];
+          const sim = db.payment_simulations.find((s: any) => s.id === simId);
+          if (sim) {
+            sim.status = args[0];
+            sim.updated_at = new Date().toISOString();
+            fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          }
+          return { rows: [], lastInsertRowid: null };
+        }
+      }
+      
+      // Handle DELETE queries
+      if (lowerQuery.includes('delete')) {
+        // Rooms table
+        if (lowerQuery.includes('rooms')) {
+          const roomId = args[0];
+          db.rooms = db.rooms.filter((r: any) => r.id !== roomId);
+          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          return { rows: [], lastInsertRowid: null };
+        }
+        
+        // Saved cards table
+        if (lowerQuery.includes('saved_cards')) {
+          const cardId = args[0];
+          const userId = args[1];
+          if (!db.saved_cards) db.saved_cards = [];
+          db.saved_cards = db.saved_cards.filter((c: any) => c.id !== cardId);
+          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          return { rows: [], lastInsertRowid: null };
+        }
+        
+        // Notifications table
+        if (lowerQuery.includes('notifications')) {
+          const userId = args[0];
+          db.notifications = db.notifications.filter((n: any) => n.user_id !== userId);
+          fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+          return { rows: [], lastInsertRowid: null };
+        }
       }
       
       // Default return for other queries
