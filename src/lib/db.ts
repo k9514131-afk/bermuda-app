@@ -13,14 +13,14 @@ function ensureDataDir() {
   }
 }
 
-// Initialize database with default data
-async function initializeDatabase() {
+// Initialize database with default data (sync version)
+function initializeDatabase() {
   ensureDataDir();
   
   if (!fs.existsSync(DB_FILE)) {
-    // Hash passwords
-    const staffPassword = await bcrypt.hash('Abouda2004#', 12);
-    const customerPassword = await bcrypt.hash('123456', 12);
+    // Hash passwords synchronously
+    const staffPassword = bcrypt.hashSync('Abouda2004#', 12);
+    const customerPassword = bcrypt.hashSync('123456', 12);
     
     const defaultData = {
       users: [
@@ -85,9 +85,9 @@ async function initializeDatabase() {
   return JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'));
 }
 
-// Simple query executor for JSON database
-export async function getDb() {
-  const db = await initializeDatabase();
+// Simple query executor for JSON database (sync version)
+export function getDb() {
+  const db = initializeDatabase();
   
   return {
     async execute({ sql: query, args = [] }: { sql: string; args?: unknown[] }) {
